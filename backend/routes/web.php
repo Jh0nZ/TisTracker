@@ -14,24 +14,27 @@ use App\Notifications\EvaluationAssigned;
 |
 */
 
+Route::get('/{any}', function () {
+    return view('index');
+})->where('any', '^(?!api).*$');
+
 Route::get('/', function () {
     return view('welcome');
 });
+
 Auth::routes(['verify' => true]);
 
 Route::get('/home', function() {
     return view('emails.dashboard');
 });
 
-
-Route::get('/preview-notification', function () {
+Route::get('api/preview-notification', function () {
     // Datos de prueba
     $evaluationName = 'Evaluación de Prueba';
     $evaluationType = 'Autoevaluación';
     $startDate = now()->format('Y-m-d H:i:s');
     $endDate = now()->addDays(7)->format('Y-m-d H:i:s');
     $teacherName = 'Docente Ejemplo';
-    $studentName = 'Estudiante Ejemplo';
 
     // Crear la instancia de notificación con los parámetros requeridos
     $notification = new EvaluationAssigned(
@@ -40,7 +43,6 @@ Route::get('/preview-notification', function () {
         $startDate,
         $endDate,
         $teacherName,
-        $studentName
     );
 
     // Usuario ficticio para previsualización
